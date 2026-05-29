@@ -117,7 +117,7 @@ public class Login extends javax.swing.JFrame {
 
             Connection conn = Koneksi.getKoneksi();
 
-            String sql = "SELECT * FROM tbl_admin WHERE username=? AND password=?";
+            String sql = "SELECT * FROM tbl_admin WHERE user=? AND password=?";
 
             PreparedStatement pst = conn.prepareStatement(sql);
 
