@@ -130,6 +130,11 @@ public class Login extends javax.swing.JFrame {
 
                 JOptionPane.showMessageDialog(null, "Login Berhasil");
 
+                Menu menu = new Menu();
+                menu.setVisible(true);
+                
+                this.dispose();
+                
             } else {
 
                 JOptionPane.showMessageDialog(null, "Username atau Password Salah");
