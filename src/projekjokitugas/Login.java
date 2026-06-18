@@ -35,7 +35,7 @@ public class Login extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        login = new javax.swing.JButton();
         username = new javax.swing.JTextField();
         password = new javax.swing.JTextField();
 
@@ -47,10 +47,10 @@ public class Login extends javax.swing.JFrame {
 
         jLabel3.setText("Password");
 
-        jButton1.setText("Login");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        login.setText("Login");
+        login.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                loginActionPerformed(evt);
             }
         });
 
@@ -83,7 +83,7 @@ public class Login extends javax.swing.JFrame {
                 .addContainerGap(72, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(login)
                 .addGap(48, 48, 48))
         );
         layout.setVerticalGroup(
@@ -100,7 +100,7 @@ public class Login extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33)
-                .addComponent(jButton1)
+                .addComponent(login)
                 .addContainerGap(36, Short.MAX_VALUE))
         );
 
@@ -111,44 +111,70 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_usernameActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
 
-        try {
+         try {
 
-            Connection conn = Koneksi.getKoneksi();
+        Connection conn = Koneksi.getKoneksi();
 
-            String sql = "SELECT * FROM tbl_admin WHERE user=? AND password=?";
+        // CEK ADMIN
+        String sqlAdmin = "SELECT * FROM tbl_admin WHERE user=? AND password=?";
 
-            PreparedStatement pst = conn.prepareStatement(sql);
+        PreparedStatement pstAdmin = conn.prepareStatement(sqlAdmin);
 
-            pst.setString(1, username.getText());
-            pst.setString(2, password.getText());
+        pstAdmin.setString(1, username.getText());
+        pstAdmin.setString(2, password.getText());
 
-            ResultSet rs = pst.executeQuery();
+        ResultSet rsAdmin = pstAdmin.executeQuery();
 
-            if (rs.next()) {
+        if (rsAdmin.next()) {
 
-                JOptionPane.showMessageDialog(null, "Login Berhasil");
+            JOptionPane.showMessageDialog(null, "Login Admin Berhasil");
 
-                Menu menu = new Menu();
-                menu.setVisible(true);
-                
+            Menu menu = new Menu();
+            menu.setVisible(true);
+
+            this.dispose();
+
+        } else {
+
+            // CEK PELANGGAN
+            String sqlPelanggan = "SELECT * FROM tbl_pelanggan WHERE username=? AND password=?";
+
+            PreparedStatement pstPelanggan = conn.prepareStatement(sqlPelanggan);
+
+            pstPelanggan.setString(1, username.getText());
+            pstPelanggan.setString(2, password.getText());
+
+            ResultSet rsPelanggan = pstPelanggan.executeQuery();
+
+            if (rsPelanggan.next()) {
+                Session.idPelanggan = rsPelanggan.getString("id_pelanggan");
+                Session.namaPelanggan = rsPelanggan.getString("nama");
+
+                JOptionPane.showMessageDialog(null, "Login Pelanggan Berhasil");
+
+                MenuPelanggan mp = new MenuPelanggan();
+                mp.setVisible(true);
+
                 this.dispose();
-                
+
             } else {
 
                 JOptionPane.showMessageDialog(null, "Username atau Password Salah");
 
             }
 
-        } catch (Exception e) {
-
-            JOptionPane.showMessageDialog(null, e);
-
         }
 
+    } catch (Exception e) {
+
+        JOptionPane.showMessageDialog(null, e);
+
+    }
+
             // TODO add your handling code here;
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_loginActionPerformed
 
     /**
      * @param args the command line arguments
@@ -186,10 +212,10 @@ public class Login extends javax.swing.JFrame {
 }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JButton login;
     private javax.swing.JTextField password;
     private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
