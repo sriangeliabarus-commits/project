@@ -152,6 +152,20 @@ public class RiwayatPesanan extends javax.swing.JFrame {
 
     private void pesananMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pesananMouseClicked
         // TODO add your handling code here:
+        int baris = pesanan.getSelectedRow();
+
+String idPesanan = pesanan.getValueAt(baris, 0).toString();
+String totalBayar = pesanan.getValueAt(baris, 6).toString();
+
+JOptionPane.showMessageDialog(null,
+    "ID = " + idPesanan +
+    "\nTotal = " + totalBayar);
+
+PembayaranPelanggan p =
+    new PembayaranPelanggan(idPesanan, totalBayar);
+
+p.setVisible(true);
+this.dispose();
     }//GEN-LAST:event_pesananMouseClicked
 
     /**
