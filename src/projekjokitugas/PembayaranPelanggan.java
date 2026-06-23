@@ -19,7 +19,7 @@ public class PembayaranPelanggan extends javax.swing.JFrame {
      * Creates new form PembayaranPelanggan
      */
     public PembayaranPelanggan() {
-        
+       initComponents();
     }
     
     public PembayaranPelanggan(String idPesanan, String totalHarga) {
@@ -27,6 +27,9 @@ public class PembayaranPelanggan extends javax.swing.JFrame {
         
         idpesanan.setText(idPesanan);
         totalbayar.setText(totalHarga);
+        
+        idpesanan.setEditable(false);
+        totalbayar.setEditable(false);
     }
 
     /**
@@ -45,7 +48,7 @@ public class PembayaranPelanggan extends javax.swing.JFrame {
         totalbayar = new javax.swing.JTextField();
         metode = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        bayar = new javax.swing.JButton();
         kembali = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -71,10 +74,10 @@ public class PembayaranPelanggan extends javax.swing.JFrame {
 
         jLabel4.setText("Metode Pembayaran");
 
-        jButton1.setText("Bayar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        bayar.setText("Bayar");
+        bayar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                bayarActionPerformed(evt);
             }
         });
 
@@ -99,7 +102,7 @@ public class PembayaranPelanggan extends javax.swing.JFrame {
                 .addGap(110, 110, 110))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(83, 83, 83)
-                .addComponent(jButton1)
+                .addComponent(bayar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
                 .addComponent(kembali)
                 .addGap(55, 55, 55))
@@ -139,7 +142,7 @@ public class PembayaranPelanggan extends javax.swing.JFrame {
                 .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(kembali)
-                    .addComponent(jButton1))
+                    .addComponent(bayar))
                 .addContainerGap(58, Short.MAX_VALUE))
         );
 
@@ -157,35 +160,75 @@ public class PembayaranPelanggan extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_metodeActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-         try {
+    private void bayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bayarActionPerformed
+        // TODO add your handling code her                                    
+    
+    try {
+
+        // CEK DULU APAKAH ID PESANAN KOSONG
+        if (idpesanan.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "ID Pesanan kosong!");
+            return;
+        }
+
+        // DEBUG (cek apakah nilai masuk)
+        JOptionPane.showMessageDialog(null, 
+                "ID Pesanan = " + idpesanan.getText());
 
         Connection conn = Koneksi.getKoneksi();
 
-        String sql = "INSERT INTO pembayaran "
+        // QUERY SIMPAN PEMBAYARAN
+        String sql = "INSERT INTO tbl_pembayaran "
                 + "(id_pesanan, metode_pembayaran, jumlah_bayar, tanggal_bayar, status_pembayaran) "
                 + "VALUES (?, ?, ?, NOW(), ?)";
 
         PreparedStatement pst = conn.prepareStatement(sql);
 
-        pst.setString(1, idpesanan.getText());
+        // id_pesanan harus integer → pakai setInt
+        pst.setInt(1, Integer.parseInt(idpesanan.getText()));
+
         pst.setString(2, metode.getSelectedItem().toString());
+
         pst.setString(3, totalbayar.getText());
+
         pst.setString(4, "Sudah Bayar");
 
         pst.executeUpdate();
 
+
+        // UPDATE STATUS PESANAN
+        String sql2 = "UPDATE tbl_pesanan "
+                + "SET status='Sudah Bayar' "
+                + "WHERE id_pesanan=?";
+
+        PreparedStatement pst2 = conn.prepareStatement(sql2);
+
+        pst2.setInt(1, Integer.parseInt(idpesanan.getText()));
+
+        pst2.executeUpdate();
+
+
         JOptionPane.showMessageDialog(null,
                 "Pembayaran berhasil!");
+
+        // PINDAH HALAMAN
+        RiwayatPesanan rp = new RiwayatPesanan();
+        rp.setVisible(true);
+
+        this.dispose();
+
+    } catch (NumberFormatException e) {
+
+        JOptionPane.showMessageDialog(null,
+                "ID Pesanan harus berupa angka!");
 
     } catch (Exception e) {
 
         JOptionPane.showMessageDialog(null,
-                e.getMessage());
+                "Error : " + e.getMessage());
 
     }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_bayarActionPerformed
 
     private void idpesananActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idpesananActionPerformed
         // TODO add your handling code here:
@@ -227,8 +270,8 @@ public class PembayaranPelanggan extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bayar;
     private javax.swing.JTextField idpesanan;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

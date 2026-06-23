@@ -49,7 +49,8 @@ try {
             rs.getString("id_pelanggan"),
             rs.getString("nama"),
             rs.getString("no_telepon"),
-            rs.getString("instansi")
+            rs.getString("instansi"),
+           
         });
 
     }
@@ -307,27 +308,44 @@ try {
     }//GEN-LAST:event_idpelangganActionPerformed
 
     private void simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpanActionPerformed
-try {
-     Connection conn = Koneksi.getKoneksi();
 
-     String sql = "INSERT INTO tbl_pelanggan(nama,no_telepon,instansi) VALUES (?,?,?)";
-     
-     PreparedStatement pst = conn.prepareStatement(sql);
-     
-     pst.setString(1, namapelanggan.getText());
-     pst.setString(2, notelepon.getText());
-     pst.setString(3, instansi.getText());
-     
-     pst.executeUpdate();
-     
-     JOptionPane.showMessageDialog(null,"Data Berhasil Disimpan");
-     
-     tampilData();
-     
-     } catch (Exception e) {
-    
-    JOptionPane.showMessageDialog(null, e);
-}
+
+    try {
+
+        Connection conn = Koneksi.getKoneksi();
+
+        // Simpan pelanggan
+        String sql = "INSERT INTO tbl_pelanggan(nama,no_telepon,instansi) VALUES (?,?,?)";
+
+        PreparedStatement pst = conn.prepareStatement(sql);
+
+        pst.setString(1, namapelanggan.getText());
+        pst.setString(2, notelepon.getText());
+        pst.setString(3, instansi.getText());
+        pst.executeUpdate();
+
+        // Buat akun login pelanggan otomatis
+        String sqlAdmin =
+                "INSERT INTO tbl_admin(user,password,role) VALUES (?,?,?)";
+
+        PreparedStatement pstAdmin = conn.prepareStatement(sqlAdmin);
+
+        pstAdmin.setString(1, namapelanggan.getText()); // username
+        pstAdmin.setString(2, "12345");     // password
+        pstAdmin.setString(3, "pelanggan");
+
+        pstAdmin.executeUpdate();
+
+        JOptionPane.showMessageDialog(null,
+                "Data Pelanggan dan Akun Login Berhasil Disimpan");
+
+        tampilData();
+
+    } catch (Exception e) {
+
+        JOptionPane.showMessageDialog(null, e);
+
+    }
 
     }//GEN-LAST:event_simpanActionPerformed
 

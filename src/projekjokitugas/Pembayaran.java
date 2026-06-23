@@ -6,6 +6,7 @@ package projekjokitugas;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -51,7 +52,7 @@ public class Pembayaran extends javax.swing.JFrame {
 
         }
             }
-        public void tampilData(){
+    public void tampilData(){
 
     DefaultTableModel model = new DefaultTableModel();
 
@@ -127,7 +128,6 @@ public class Pembayaran extends javax.swing.JFrame {
         cbPesanan = new javax.swing.JComboBox<>();
         cbMetode = new javax.swing.JComboBox<>();
         jumlahbayar = new javax.swing.JTextField();
-        tanggalbayar = new javax.swing.JTextField();
         cbStatusPembayaran = new javax.swing.JComboBox<>();
         simpan1 = new javax.swing.JButton();
         edit1 = new javax.swing.JButton();
@@ -137,6 +137,7 @@ public class Pembayaran extends javax.swing.JFrame {
         kembali1 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblDataPembayaran = new javax.swing.JTable();
+        inputTanggal = new com.toedter.calendar.JDateChooser();
 
         simpan.setText("Simpan");
         simpan.addActionListener(new java.awt.event.ActionListener() {
@@ -285,42 +286,9 @@ public class Pembayaran extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(161, 161, 161)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel3))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel4))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel5))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel6))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel7)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cbPesanan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(idpembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbMetode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jumlahbayar, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tanggalbayar, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbStatusPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(54, 54, 54))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(simpan1)
                         .addGap(18, 18, 18)
@@ -333,8 +301,31 @@ public class Pembayaran extends javax.swing.JFrame {
                         .addComponent(caripembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(kembali1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(16, 16, 16)))
-                .addContainerGap())
+                        .addGap(28, 28, 28))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(155, 155, 155)
+                                        .addComponent(jLabel1))
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel7))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(cbStatusPembayaran, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jumlahbayar)
+                                    .addComponent(inputTanggal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cbMetode, 0, 1, Short.MAX_VALUE)
+                                    .addComponent(cbPesanan, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(idpembayaran))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jScrollPane3))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -358,9 +349,9 @@ public class Pembayaran extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addComponent(jumlahbayar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel6)
-                    .addComponent(tanggalbayar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(inputTanggal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
@@ -421,27 +412,7 @@ public class Pembayaran extends javax.swing.JFrame {
 
     private void tblDataPesananMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataPesananMouseClicked
         // TODO add your handling code here:
-        int baris = tblDataPembayaran.getSelectedRow();
-
-idpembayaran.setText(
-    tblDataPembayaran.getValueAt(baris, 0).toString()
-);
-
-jumlahbayar.setText(
-    tblDataPembayaran.getValueAt(baris, 3).toString()
-);
-
-tanggalbayar.setText(
-    tblDataPembayaran.getValueAt(baris, 4).toString()
-);
-
-cbMetode.setSelectedItem(
-    tblDataPembayaran.getValueAt(baris, 2).toString()
-);
-
-cbStatusPembayaran.setSelectedItem(
-    tblDataPembayaran.getValueAt(baris, 5).toString()
-);
+    
     }//GEN-LAST:event_tblDataPesananMouseClicked
 
     private void simpan1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpan1ActionPerformed
@@ -450,22 +421,75 @@ try {
     Connection conn = Koneksi.getKoneksi();
 
     String pesanan = cbPesanan.getSelectedItem().toString();
-
     String idPesanan = pesanan.split(" - ")[0];
 
-    String sql = "INSERT INTO tbl_pembayaran(id_pesanan,metode_pembayaran,jumlah_bayar,tanggal_bayar,status_pembayaran) VALUES (?,?,?,?,?)";
+    JOptionPane.showMessageDialog(null,
+            "ID Pesanan = " + idPesanan);
+
+    String sql = "INSERT INTO tbl_pembayaran "
+            + "(id_pesanan, metode_pembayaran, jumlah_bayar, tanggal_bayar, status_pembayaran) "
+            + "VALUES (?,?,?,?,?)";
+
+    PreparedStatement pst = conn.prepareStatement(sql);
+
+    pst.setInt(1, Integer.parseInt(idPesanan));
+    pst.setString(2, cbMetode.getSelectedItem().toString());
+    pst.setString(3, jumlahbayar.getText());
+
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    String tanggal = sdf.format(inputTanggal.getDate());
+
+    pst.setString(4, tanggal);
+    pst.setString(5, cbStatusPembayaran.getSelectedItem().toString());
+
+    pst.executeUpdate();
+
+    JOptionPane.showMessageDialog(null,
+            "Data Pembayaran Berhasil Disimpan");
+
+    tampilData();
+
+} catch (Exception e) {
+
+    JOptionPane.showMessageDialog(null,
+            e.getMessage());
+
+}
+    }//GEN-LAST:event_simpan1ActionPerformed
+
+    private void edit1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edit1ActionPerformed
+        // TODO add your handling code here:
+   try {
+
+    Connection conn = Koneksi.getKoneksi();
+
+    String pesanan = cbPesanan.getSelectedItem().toString();
+    String idPesanan = pesanan.split(" - ")[0];
+
+    String sql = "UPDATE tbl_pembayaran SET "
+            + "id_pesanan=?, "
+            + "metode_pembayaran=?, "
+            + "jumlah_bayar=?, "
+            + "tanggal_bayar=?, "
+            + "status_pembayaran=? "
+            + "WHERE id_pembayaran=?";
 
     PreparedStatement pst = conn.prepareStatement(sql);
 
     pst.setString(1, idPesanan);
     pst.setString(2, cbMetode.getSelectedItem().toString());
     pst.setString(3, jumlahbayar.getText());
-    pst.setString(4, tanggalbayar.getText());
+
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    String tanggal = sdf.format(inputTanggal.getDate());
+
+    pst.setString(4, tanggal);
     pst.setString(5, cbStatusPembayaran.getSelectedItem().toString());
+    pst.setString(6, idpembayaran.getText());
 
     pst.executeUpdate();
 
-    JOptionPane.showMessageDialog(null, "Data Pembayaran Berhasil Disimpan");
+    JOptionPane.showMessageDialog(null, "Data berhasil diubah");
 
     tampilData();
 
@@ -473,41 +497,7 @@ try {
 
     JOptionPane.showMessageDialog(null, e);
 
-}       
-    }//GEN-LAST:event_simpan1ActionPerformed
-
-    private void edit1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edit1ActionPerformed
-        // TODO add your handling code here:
-    try {
-
-        Connection conn = Koneksi.getKoneksi();
-
-        String pesanan = cbPesanan.getSelectedItem().toString();
-
-        String idPesanan = pesanan.split(" - ")[0];
-
-        String sql = "UPDATE tbl_pembayaran SET id_pesanan=?, metode_pembayaran=?, jumlah_bayar=?, tanggal_bayar=?, status_pembayaran=? WHERE id_pembayaran=?";
-
-        PreparedStatement pst = conn.prepareStatement(sql);
-
-        pst.setString(1, idPesanan);
-        pst.setString(2, cbMetode.getSelectedItem().toString());
-        pst.setString(3, jumlahbayar.getText());
-        pst.setString(4, tanggalbayar.getText());
-        pst.setString(5, cbStatusPembayaran.getSelectedItem().toString());
-        pst.setString(6, idpembayaran.getText());
-
-        pst.executeUpdate();
-
-        JOptionPane.showMessageDialog(null, "Data Pembayaran Berhasil Diubah");
-
-        tampilData();
-
-    } catch (Exception e) {
-
-        JOptionPane.showMessageDialog(null, e);
-
-    }
+}
     }//GEN-LAST:event_edit1ActionPerformed
 
     private void hapus1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hapus1ActionPerformed
@@ -602,31 +592,45 @@ try {
     private void tblDataPembayaranMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDataPembayaranMouseClicked
         // TODO add your handling code here:
         
+
+    try {
+
         int baris = tblDataPembayaran.getSelectedRow();
 
-idpembayaran.setText(
-    tblDataPembayaran.getValueAt(baris, 0).toString()
-);
+        idpembayaran.setText(
+                tblDataPembayaran.getValueAt(baris, 0).toString()
+        );
 
-jumlahbayar.setText(
-    tblDataPembayaran.getValueAt(baris, 3).toString()
-);
+        jumlahbayar.setText(
+                tblDataPembayaran.getValueAt(baris, 3).toString()
+        );
 
-tanggalbayar.setText(
-    tblDataPembayaran.getValueAt(baris, 4).toString()
-);
+        String tanggal =
+                tblDataPembayaran.getValueAt(baris, 4).toString();
 
-cbMetode.setSelectedItem(
-    tblDataPembayaran.getValueAt(baris, 2).toString()
-);
+        java.util.Date date =
+                new SimpleDateFormat("yyyy-MM-dd").parse(tanggal);
 
-cbStatusPembayaran.setSelectedItem(
-    tblDataPembayaran.getValueAt(baris, 5).toString()
-);
+        inputTanggal.setDate(date);
+
+        cbMetode.setSelectedItem(
+                tblDataPembayaran.getValueAt(baris, 2).toString()
+        );
+
+        cbStatusPembayaran.setSelectedItem(
+                tblDataPembayaran.getValueAt(baris, 5).toString()
+        );
+
+    } catch (Exception e) {
+
+        JOptionPane.showMessageDialog(null, e.getMessage());
+
+    }
     }//GEN-LAST:event_tblDataPembayaranMouseClicked
 
     private void cbPesananActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPesananActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_cbPesananActionPerformed
 
     /**
@@ -677,6 +681,7 @@ cbStatusPembayaran.setSelectedItem(
     private javax.swing.JButton hapus;
     private javax.swing.JButton hapus1;
     private javax.swing.JTextField idpembayaran;
+    private com.toedter.calendar.JDateChooser inputTanggal;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -691,7 +696,6 @@ cbStatusPembayaran.setSelectedItem(
     private javax.swing.JButton kembali1;
     private javax.swing.JButton simpan;
     private javax.swing.JButton simpan1;
-    private javax.swing.JTextField tanggalbayar;
     private javax.swing.JTable tblDataPembayaran;
     private javax.swing.JTable tblDataPesanan;
     // End of variables declaration//GEN-END:variables

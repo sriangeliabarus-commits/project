@@ -38,6 +38,7 @@ public class Login extends javax.swing.JFrame {
         login = new javax.swing.JButton();
         username = new javax.swing.JTextField();
         password = new javax.swing.JTextField();
+        role = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -60,6 +61,13 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        role.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "admin", "pelanggan" }));
+        role.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                roleActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -71,20 +79,22 @@ public class Login extends javax.swing.JFrame {
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(46, 46, 46)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(18, 18, 18)
-                                .addComponent(password)))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(role, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel2)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel3)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(password))))))
                 .addContainerGap(72, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(login)
-                .addGap(48, 48, 48))
+                .addGap(47, 47, 47))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -99,9 +109,11 @@ public class Login extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(role, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addComponent(login)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addGap(16, 16, 16))
         );
 
         pack();
@@ -113,44 +125,36 @@ public class Login extends javax.swing.JFrame {
 
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
 
-         try {
+    try {
 
         Connection conn = Koneksi.getKoneksi();
 
-        // CEK ADMIN
-        String sqlAdmin = "SELECT * FROM tbl_admin WHERE user=? AND password=?";
+        String sql = "SELECT * FROM tbl_admin WHERE user=? AND password=? AND role=?";
 
-        PreparedStatement pstAdmin = conn.prepareStatement(sqlAdmin);
+        PreparedStatement pst = conn.prepareStatement(sql);
 
-        pstAdmin.setString(1, username.getText());
-        pstAdmin.setString(2, password.getText());
+        pst.setString(1, username.getText());
+        pst.setString(2, password.getText());
+        pst.setString(3, role.getSelectedItem().toString());
 
-        ResultSet rsAdmin = pstAdmin.executeQuery();
+        ResultSet rs = pst.executeQuery();
 
-        if (rsAdmin.next()) {
+        if (rs.next()) {
 
-            JOptionPane.showMessageDialog(null, "Login Admin Berhasil");
+            String roleUser = rs.getString("role");
 
-            Menu menu = new Menu();
-            menu.setVisible(true);
+            if (roleUser.equals("admin")) {
 
-            this.dispose();
+                JOptionPane.showMessageDialog(null, "Login Admin Berhasil");
 
-        } else {
+                Menu menu = new Menu();
+                menu.setVisible(true);
 
-            // CEK PELANGGAN
-            String sqlPelanggan = "SELECT * FROM tbl_pelanggan WHERE username=? AND password=?";
+                this.dispose();
 
-            PreparedStatement pstPelanggan = conn.prepareStatement(sqlPelanggan);
-
-            pstPelanggan.setString(1, username.getText());
-            pstPelanggan.setString(2, password.getText());
-
-            ResultSet rsPelanggan = pstPelanggan.executeQuery();
-
-            if (rsPelanggan.next()) {
-                Session.idPelanggan = rsPelanggan.getString("id_pelanggan");
-                Session.namaPelanggan = rsPelanggan.getString("nama");
+            } else if (roleUser.equals("pelanggan")) {
+                Session.idPelanggan = rs.getString("id_admin");
+                Session.namaPelanggan = rs.getString("user");
 
                 JOptionPane.showMessageDialog(null, "Login Pelanggan Berhasil");
 
@@ -159,11 +163,12 @@ public class Login extends javax.swing.JFrame {
 
                 this.dispose();
 
-            } else {
-
-                JOptionPane.showMessageDialog(null, "Username atau Password Salah");
-
             }
+
+        } else {
+
+            JOptionPane.showMessageDialog(null,
+                    "Username, Password atau Role Salah");
 
         }
 
@@ -172,9 +177,13 @@ public class Login extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, e);
 
     }
-
+    
             // TODO add your handling code here;
     }//GEN-LAST:event_loginActionPerformed
+
+    private void roleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_roleActionPerformed
 
     /**
      * @param args the command line arguments
@@ -217,6 +226,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JButton login;
     private javax.swing.JTextField password;
+    private javax.swing.JComboBox<String> role;
     private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
 

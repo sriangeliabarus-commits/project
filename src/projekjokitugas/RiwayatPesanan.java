@@ -116,16 +116,17 @@ public class RiwayatPesanan extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(kembali)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(21, 21, 21)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(163, 163, 163)
-                            .addComponent(jLabel1))))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(kembali)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(163, 163, 163)
+                                .addComponent(jLabel1)
+                                .addGap(146, 146, 146)))
+                        .addGap(0, 308, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -151,15 +152,6 @@ public class RiwayatPesanan extends javax.swing.JFrame {
 
     private void pesananMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pesananMouseClicked
         // TODO add your handling code here:
-          int baris = pesanan.getSelectedRow();
-
-    String idPesanan = pesanan.getValueAt(baris, 0).toString();
-    String totalBayar = pesanan.getValueAt(baris, 6).toString();
-
-    PembayaranPelanggan p = new PembayaranPelanggan(idPesanan, totalBayar);
-    p.setVisible(true);
-
-    this.dispose();
     }//GEN-LAST:event_pesananMouseClicked
 
     /**

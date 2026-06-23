@@ -131,8 +131,8 @@ public class MenuPelanggan extends javax.swing.JFrame {
 
     private void pembayaranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pembayaranActionPerformed
         // TODO add your handling code here:
-         PembayaranPelanggan pp = new PembayaranPelanggan();
-        pp.setVisible(true);
+         PembayaranPelanggan p = new PembayaranPelanggan();
+        p.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_pembayaranActionPerformed
 
